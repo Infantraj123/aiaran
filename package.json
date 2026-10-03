@@ -1,7 +1,7 @@
 {
   "name": "aiaran",
   "version": "0.1.0",
-  "description": "ARAN \u2014 local-first AI privacy SDK. Detects, minimizes and protects sensitive data in text, images, PDFs and DOCX before it reaches AI models.",
+  "description": "ARAN — local-first AI privacy SDK. Detects, minimizes and protects sensitive data in text, images, PDFs and DOCX before it reaches AI models.",
   "keywords": [
     "privacy",
     "pii",
@@ -57,7 +57,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "aran": "./dist/cli.js"
+    "aran": "dist/cli.js"
   },
   "files": [
     "dist",

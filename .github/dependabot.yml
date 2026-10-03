@@ -7,6 +7,23 @@ updates:
     groups:
       dev-dependencies:
         dependency-type: development
+        update-types: [minor, patch]
+    ignore:
+      # TypeScript 6+ breaks tsup's declaration build and is outside typescript-eslint's
+      # supported range (<6.1). Upgrade together with tsup/typescript-eslint, by hand.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+      # Vitest 5 requires Node.js >= 22; ARAN supports and tests Node.js 20.
+      - dependency-name: vitest
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@vitest/coverage-v8"
+        update-types: ["version-update:semver-major"]
+      # Types must match the oldest supported runtime (Node.js 20).
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+      # Major PDF.js upgrades change rendering/canvas APIs; upgrade and test by hand.
+      - dependency-name: pdfjs-dist
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:

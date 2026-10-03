@@ -1,0 +1,140 @@
+{
+  "name": "aiaran",
+  "version": "0.1.0",
+  "description": "ARAN \u2014 local-first AI privacy SDK. Detects, minimizes and protects sensitive data in text, images, PDFs and DOCX before it reaches AI models.",
+  "keywords": [
+    "privacy",
+    "pii",
+    "redaction",
+    "anonymization",
+    "tokenization",
+    "dlp",
+    "llm",
+    "ai",
+    "security",
+    "ocr",
+    "pdf",
+    "docx"
+  ],
+  "license": "Apache-2.0",
+  "author": {
+    "name": "AROCKIA INFANT RAJ M",
+    "email": "infantraj01012003@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "AROCKIA INFANT RAJ M",
+      "email": "infantraj01012003@gmail.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Infantraj123/aiaran.git"
+  },
+  "homepage": "https://github.com/Infantraj123/aiaran#readme",
+  "bugs": {
+    "url": "https://github.com/Infantraj123/aiaran/issues"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "aran": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "NOTICE",
+    "LICENSE",
+    "SECURITY.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit && tsc -p demos/tsconfig.json",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:security": "vitest run tests/security",
+    "test:coverage": "vitest run --coverage",
+    "fixtures": "node scripts/generate-fixtures.mjs",
+    "bench": "node scripts/benchmark.mjs",
+    "pack:check": "npm pack --dry-run && node scripts/check-package.mjs",
+    "prepublishOnly": "npm run typecheck && npm run lint && npm test && npm run build",
+    "demos": "npm run build && for f in demos/0*.ts; do node \"$f\" || exit 1; done"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3",
+    "yaml": "^2.9.1"
+  },
+  "peerDependencies": {
+    "@anthropic-ai/sdk": ">=0.60.0",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^5.6.205 || >=6.2.108",
+    "sharp": ">=0.33.0",
+    "tesseract.js": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@anthropic-ai/sdk": {
+      "optional": true
+    },
+    "pdf-lib": {
+      "optional": true
+    },
+    "pdfjs-dist": {
+      "optional": true
+    },
+    "sharp": {
+      "optional": true
+    },
+    "tesseract.js": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.131.0",
+    "@eslint/js": "^10.0.1",
+    "@napi-rs/canvas": "^1.0.10",
+    "@tesseract.js-data/eng": "^1.0.0",
+    "@types/node": "^20.19.43",
+    "@vitest/coverage-v8": "^4.1.11",
+    "eslint": "^10.12.0",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.3.289",
+    "prettier": "^3.9.9",
+    "sharp": "^0.35.5",
+    "tesseract.js": "^7.0.0",
+    "tsup": "^8.5.1",
+    "typescript": "~5.9",
+    "typescript-eslint": "^8.71.0",
+    "vitest": "^4.1.11"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "overrides": {
+    "esbuild": "^0.28.2"
+  }
+}

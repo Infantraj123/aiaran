@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - name: Install fonts for OCR fixtures
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends fonts-dejavu-core
+      - name: Install
+        run: npm ci
+      # pdfjs-dist 6.x requires Node >= 22.13; Node 20 users run the 5.6 line (see SECURITY.md).
+      - name: Use pdfjs-dist 5.6 on Node 20
+        if: matrix.node == 20
+        run: npm install --no-save pdfjs-dist@5.6.205
+      - name: Lint
+        run: npm run lint
+      - name: Format
+        run: npm run format:check
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit tests
+        run: npm run test:unit
+      - name: Integration tests
+        run: npm run test:integration
+      - name: Security tests
+        run: npm run test:security
+      - name: Build
+        run: npm run build
+      - name: Package validation
+        run: npm run pack:check
+      - name: Demos (documentation examples)
+        if: matrix.node != 20
+        run: |
+          for f in demos/0*.ts; do node "$f" > /dev/null || exit 1; done
+          node demos/10-web-server.ts --self-test > /dev/null
+          bash demos/11-cli.sh > /dev/null
+
+  audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Audit runtime dependencies
+        run: npm audit --omit=dev --audit-level=moderate
+      - name: Audit all dependencies
+        run: npm audit --audit-level=high
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends fonts-dejavu-core
+      - run: npm ci
+      - run: npm run test:coverage
+
+  docker:
+    name: Docker example
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -f examples/docker/Dockerfile -t aran:ci .
+      - name: Smoke test (no network)
+        run: docker run --rm --network none aran:ci policies list

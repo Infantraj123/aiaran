@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+*.tgz
+.env
+.env.*
+*.log
+.DS_Store
+eng.traineddata
+*.traineddata
+demos/output/
+test-fixtures/

@@ -1,0 +1,52 @@
+name: Bug report
+description: Something does not work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Use synthetic data only.** Never paste real names, IDs, documents, credentials or AI transcripts containing personal data.
+        Security vulnerabilities must be reported privately — see SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: ARAN version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version and OS
+      placeholder: "Node 22.11, Ubuntu 24.04"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        [Text, Image / OCR, PDF, DOCX, Policy, Restoration / output, Provider adapter, CLI, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction (synthetic data)
+      description: Code, policy and synthetic input that reproduce the problem.
+      render: ts
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual behaviour
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: This report contains no real personal or confidential data.
+          required: true

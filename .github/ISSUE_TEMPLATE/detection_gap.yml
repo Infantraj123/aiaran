@@ -1,0 +1,40 @@
+name: Detection gap
+description: A sensitive value ARAN missed (false negative) or flagged wrongly (false positive)
+labels: [detection]
+body:
+  - type: markdown
+    attributes:
+      value: "**Use synthetic data only.** Construct a fake example that has the same format as the real value."
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options: [Missed (false negative), Wrongly flagged (false positive)]
+    validations:
+      required: true
+  - type: input
+    id: entity
+    attributes:
+      label: Entity type
+      placeholder: "PHONE, AADHAAR, PERSON, …"
+    validations:
+      required: true
+  - type: textarea
+    id: sample
+    attributes:
+      label: Synthetic sample text
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: language
+    attributes:
+      label: Language / script
+      placeholder: "English, Hindi, Tamil, …"
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: The sample is synthetic and contains no real personal data.
+          required: true
